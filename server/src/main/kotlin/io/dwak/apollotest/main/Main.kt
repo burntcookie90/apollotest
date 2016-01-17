@@ -34,10 +34,17 @@ fun init(env: Environment) {
         "page"
     });
 
-    env.routingEngine().registerAutoRoute(async("GET", "/top") {
-        rc: RequestContext? ->
+    env.routingEngine().registerAutoRoute(async("GET", "/news", getStories("news", moshi)))
+    env.routingEngine().registerAutoRoute(async("GET", "/news?p=2", getStories("news?p=2", moshi)))
+    env.routingEngine().registerAutoRoute(async("GET", "/newest", getStories("newest", moshi)))
+    env.routingEngine().registerAutoRoute(async("GET", "/show", getStories("show", moshi)))
+
+}
+
+private fun getStories(page : String, moshi: Moshi): (RequestContext) -> CompletableFuture<String> {
+    return {
         val stage = CompletableFuture<String>()
-        Jsoup.connect("https://news.ycombinator.com/")
+        Jsoup.connect("https://news.ycombinator.com/$page")
                 .getObservable()
                 .map {
                     it.body().getElementsByClass("itemlist")
@@ -57,6 +64,5 @@ fun init(env: Environment) {
                 }
 
         stage
-    })
-
+    }
 }
