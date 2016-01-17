@@ -1,0 +1,20 @@
+group 'io.dwak.service'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'kotlin'
+apply plugin: 'application'
+
+mainClassName = "io.dwak.apollotest.main.MainKt"
+
+defaultTasks 'run'
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.0-beta-4584"
+    compile 'com.spotify:apollo-http-service:1.0.1'
+    compile 'com.spotify:apollo-extra:1.0.1'
+    runtime "ch.qos.logback:logback-classic:1.1.3"
+}
+
+jar {
+    manifest.attributes('Main-Class': 'io.dwak.apollotest.main.MainKt')
+}
